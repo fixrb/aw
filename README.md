@@ -19,7 +19,6 @@ Creates a subprocess to execute a block inside.
 
 * [MRI](https://www.ruby-lang.org/)
 * [Rubinius](http://rubini.us/)
-* [JRuby](http://jruby.org/)
 
 ## Installation
 
