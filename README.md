@@ -82,3 +82,9 @@ See `LICENSE.md` file.
 [travis]: https://travis-ci.org/fixrb/aw
 [inchpages]: http://inch-ci.org/github/fixrb/aw/
 [rubydoc]: http://rubydoc.info/gems/aw/frames
+
+***
+
+This project is sponsored by:
+
+[![Sashite](http://www.sashite.com/assets/img/sashite.png)](http://www.sashite.com/)
