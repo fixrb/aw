@@ -45,8 +45,20 @@ And then execute:
 
 ## Usage
 
+Execute & return the result:
+
 ```ruby
 Aw.fork! { 6 * 7 } # => 42
+```
+
+Prevent from side effects:
+
+```ruby
+arr = ['foo']
+
+Aw.fork! { arr << 'FUU' } # => ["foo", "FUU"]
+
+arr # => ["foo"]
 ```
 
 ## Security
