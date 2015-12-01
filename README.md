@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/fixrb/aw.svg?branch=master)][travis]
 [![Code Climate](https://codeclimate.com/github/fixrb/aw/badges/gpa.svg)][codeclimate]
+[![Dependency Status](https://gemnasium.com/fixrb/aw.svg)][gemnasium]
 [![Gem Version](https://badge.fury.io/rb/aw.svg)][gem]
 [![Inline docs](http://inch-ci.org/github/fixrb/aw.svg?branch=master)][inchpages]
 [![Documentation](http://img.shields.io/:yard-docs-38c800.svg)][rubydoc]
@@ -94,6 +95,7 @@ See `LICENSE.md` file.
 [gem]: https://rubygems.org/gems/aw
 [travis]: https://travis-ci.org/fixrb/aw
 [codeclimate]: https://codeclimate.com/github/fixrb/aw
+[gemnasium]: https://gemnasium.com/fixrb/aw
 [inchpages]: http://inch-ci.org/github/fixrb/aw
 [rubydoc]: http://rubydoc.info/gems/aw/frames
 
