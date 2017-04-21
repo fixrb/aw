@@ -22,13 +22,11 @@ module Aw
 
     # Run the block inside a subprocess, and return the value.
     #
-    # @param block [Proc] The code to run in a subprocess.
-    #
     # @return [#object_id] The result.
-    def call(&block)
+    def call
       pid = fork do
         read.close
-        result = block.call
+        result = yield
         Marshal.dump(result, write)
         exit!(0)
       end
