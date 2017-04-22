@@ -34,6 +34,8 @@ module Aw
       write.close
       result = read.read
       Process.wait(pid)
+
+      # rubocop:disable MarshalLoad
       Marshal.load(result)
     end
   end
