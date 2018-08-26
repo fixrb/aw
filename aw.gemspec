@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |spec|
   spec.name          = 'aw'
   spec.version       = File.read('VERSION.semver').chomp
@@ -14,11 +16,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler',    '~> 1.14'
-  spec.add_development_dependency 'rake',       '~> 12.0'
+  spec.add_development_dependency 'bundler',    '~> 1.16'
+  spec.add_development_dependency 'rake',       '~> 12.3'
+  spec.add_development_dependency 'rubocop',    '~> 0.58'
+  spec.add_development_dependency 'simplecov',  '~> 0.16'
   spec.add_development_dependency 'yard',       '~> 0.9'
-  spec.add_development_dependency 'simplecov',  '~> 0.14'
-  spec.add_development_dependency 'rubocop',    '~> 0.48'
 
   spec.cert_chain   = ['certs/gem-fixrb-public_cert.pem']
   private_key       = File.expand_path('~/.ssh/gem-fixrb-private_key.pem')

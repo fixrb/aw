@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Aw
   # The Fork class.
   class Fork
@@ -37,6 +39,7 @@ module Aw
 
       # rubocop:disable MarshalLoad
       Marshal.load(result)
+      # rubocop:enable MarshalLoad
     end
   end
 end
