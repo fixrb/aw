@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/fixrb/aw.svg?branch=master)][travis]
 [![Code Climate](https://codeclimate.com/github/fixrb/aw/badges/gpa.svg)][codeclimate]
-[![Dependency Status](https://gemnasium.com/fixrb/aw.svg)][gemnasium]
 [![Gem Version](https://badge.fury.io/rb/aw.svg)][gem]
 [![Inline docs](http://inch-ci.org/github/fixrb/aw.svg?branch=master)][inchpages]
 [![Documentation](http://img.shields.io/:yard-docs-38c800.svg)][rubydoc]
