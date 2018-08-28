@@ -21,8 +21,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop',    '~> 0.58'
   spec.add_development_dependency 'simplecov',  '~> 0.16'
   spec.add_development_dependency 'yard',       '~> 0.9'
-
-  spec.cert_chain   = ['certs/gem-fixrb-public_cert.pem']
-  private_key       = File.expand_path('~/.ssh/gem-fixrb-private_key.pem')
-  spec.signing_key  = private_key if File.exist?(private_key)
 end

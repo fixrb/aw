@@ -25,14 +25,8 @@ module Aw
     # Run the block inside a subprocess, and return the value.
     #
     # @return [#object_id] The result.
-    def call
-      pid = fork do
-        read.close
-        result = yield
-        Marshal.dump(result, write)
-        exit!(0)
-      end
-
+    def call(*, **, &block)
+      pid = fork_and_return_pid(&block)
       write.close
       result = read.read
       Process.wait(pid)
@@ -40,6 +34,17 @@ module Aw
       # rubocop:disable MarshalLoad
       Marshal.load(result)
       # rubocop:enable MarshalLoad
+    end
+
+    private
+
+    def fork_and_return_pid
+      fork do
+        read.close
+        result = yield
+        Marshal.dump(result, write)
+        exit!(0)
+      end
     end
   end
 end

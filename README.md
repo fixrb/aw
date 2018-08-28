@@ -14,7 +14,7 @@ Creates a subprocess to execute a block inside.
 
 * Home page: https://github.com/fixrb/aw
 * Bugs/issues: https://github.com/fixrb/aw/issues
-* Support: https://stackoverflow.com/questions/tagged/aw
+* Support: https://stackoverflow.com/questions/tagged/fixrb
 
 ## Rubies
 
@@ -23,18 +23,7 @@ Creates a subprocess to execute a block inside.
 
 ## Installation
 
-__Aw__ is cryptographically signed.
-
-To be sure the gem you install hasn't been tampered with, add my public key
-(if you haven't already) as a trusted certificate:
-
-    $ gem cert --add <(curl -Ls https://raw.github.com/fixrb/aw/master/certs/gem-fixrb-public_cert.pem)
-    $ gem install aw -P HighSecurity
-
-The `HighSecurity` trust profile will verify all gems.  All of __Aw__'s
-dependencies are signed.
-
-Or add this line to your application's Gemfile:
+Add this line to your application's Gemfile:
 
 ```ruby
 gem 'aw'
@@ -43,6 +32,10 @@ gem 'aw'
 And then execute:
 
     $ bundle
+
+Or install it yourself as:
+
+    $ gem install aw
 
 ## Usage
 
@@ -94,7 +87,6 @@ See `LICENSE.md` file.
 [gem]: https://rubygems.org/gems/aw
 [travis]: https://travis-ci.org/fixrb/aw
 [codeclimate]: https://codeclimate.com/github/fixrb/aw
-[gemnasium]: https://gemnasium.com/fixrb/aw
 [inchpages]: http://inch-ci.org/github/fixrb/aw
 [rubydoc]: http://rubydoc.info/gems/aw/frames
 
