@@ -19,7 +19,7 @@ Creates a subprocess to execute a block inside.
 ## Rubies
 
 * [MRI](https://www.ruby-lang.org/)
-* [Rubinius](http://rubini.us/)
+* [Rubinius](https://rubinius.com/)
 
 ## Installation
 
@@ -70,7 +70,7 @@ example:
 
 ## Versioning
 
-__Aw__ follows [Semantic Versioning 2.0](http://semver.org/).
+__Aw__ follows [Semantic Versioning 2.0](https://semver.org/).
 
 ## Contributing
 
@@ -94,4 +94,4 @@ See `LICENSE.md` file.
 
 This project is sponsored by:
 
-[![Sashite](http://sashite.com/img/sashite.png)](http://sashite.com/)
+[![Sashite](https://sashite.com/img/sashite.png)](https://sashite.com/)
