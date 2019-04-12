@@ -39,13 +39,13 @@ Or install it yourself as:
 
 ## Usage
 
-Execute & return the result:
+It executes the block in a subprocess, and returns the result in the current process:
 
 ```ruby
 Aw.fork! { 6 * 7 } # => 42
 ```
 
-Prevent from side effects:
+Of course, it prevents from side effects:
 
 ```ruby
 arr = ['foo']
