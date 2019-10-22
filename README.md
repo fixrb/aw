@@ -55,6 +55,12 @@ Aw.fork! { arr << 'FUU' } # => ["foo", "FUU"]
 arr # => ["foo"]
 ```
 
+Exceptions raised within the block are propagated:
+
+```ruby
+Aw.fork! { nil + 1 } # => NoMethodError (undefined method `+' for nil:NilClass)
+```
+
 ## Security
 
 As a basic form of security __Aw__ provides a set of SHA512 checksums for

@@ -35,7 +35,9 @@ module Aw
       Process.wait(pid)
 
       # rubocop:disable MarshalLoad
-      Marshal.load(result)
+      Marshal.load(result).tap do |r|
+        raise r if r.is_a?(Exception)
+      end
       # rubocop:enable MarshalLoad
     end
 
@@ -44,7 +46,11 @@ module Aw
     def fork_and_return_pid
       fork do
         read.close
-        result = yield
+        begin
+          result = yield
+        rescue
+          result = $!
+        end
         Marshal.dump(result, write)
         exit!(0)
       end
