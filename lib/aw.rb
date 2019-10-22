@@ -13,8 +13,8 @@ module Aw
   #
   # @return [#object_id] The result.
   def self.fork!(&block)
-    Fork.new(*IO.pipe).call(&block)
+    Fork.new(*::IO.pipe).call(&block)
   end
 end
 
-require_relative File.join 'aw', 'fork'
+require_relative File.join('aw', 'fork')

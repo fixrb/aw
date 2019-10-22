@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative File.join 'support', 'coverage'
-require_relative File.join '..', 'lib', 'aw'
+require_relative File.join('support', 'coverage')
+require_relative File.join('..', 'lib', 'aw')
 
 # It is expected to equal 42
 raise unless 42.equal?(Aw.fork! { 6 * 7 })
@@ -14,7 +14,7 @@ raise unless (Aw.fork! {}).nil?
 
 # It is expected to raise
 begin
-  Aw.fork! { raise "an exception" }
-rescue
-  raise unless $!.message == 'an exception'
+  Aw.fork! { raise 'an exception' }
+rescue StandardError
+  raise unless $ERROR_INFO.message == 'an exception'
 end

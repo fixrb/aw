@@ -9,7 +9,7 @@ module Aw
     # @param write [IO] The write endpoint.
     def initialize(read, write)
       # Currently, not available on all platforms.
-      raise 'fork() unimplemented' unless Process.respond_to?(:fork)
+      raise 'fork() unimplemented' unless ::Process.respond_to?(:fork)
 
       @read   = read
       @write  = write
@@ -32,11 +32,11 @@ module Aw
       pid = fork_and_return_pid(&block)
       write.close
       result = read.read
-      Process.wait(pid)
+      ::Process.wait(pid)
 
       # rubocop:disable MarshalLoad
-      Marshal.load(result).tap do |r|
-        raise r if r.is_a?(Exception)
+      ::Marshal.load(result).tap do |r|
+        raise r if r.is_a?(::Exception)
       end
       # rubocop:enable MarshalLoad
     end
@@ -46,12 +46,14 @@ module Aw
     def fork_and_return_pid
       fork do
         read.close
+
         begin
           result = yield
-        rescue
-          result = $!
+        rescue ::StandardError
+          result = $ERROR_INFO
         end
-        Marshal.dump(result, write)
+
+        ::Marshal.dump(result, write)
         exit!(0)
       end
     end
