@@ -47,11 +47,13 @@ module Aw
       fork do
         read.close
 
+        # rubocop:disable Lint/RescueException
         begin
           result = yield
-        rescue ::StandardError
+        rescue ::Exception
           result = $ERROR_INFO
         end
+        # rubocop:enable Lint/RescueException
 
         ::Marshal.dump(result, write)
         exit!(0)

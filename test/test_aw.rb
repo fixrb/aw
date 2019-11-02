@@ -12,9 +12,16 @@ raise unless 'bar'.eql?(Aw.fork! { 'bar' })
 # It is expected to be nil
 raise unless (Aw.fork! {}).nil?
 
-# It is expected to raise
+# It is expected to raise a generic error
 begin
-  Aw.fork! { raise 'an exception' }
-rescue StandardError
-  raise unless $ERROR_INFO.message == 'an exception'
+  Aw.fork! { raise 'BOOM' }
+rescue RuntimeError
+  raise unless $ERROR_INFO.message == 'BOOM'
+end
+
+# It is expected to initiate the termination of the script
+begin
+  Aw.fork! { exit(1) }
+rescue SystemExit
+  raise unless $ERROR_INFO.message == 'exit'
 end
