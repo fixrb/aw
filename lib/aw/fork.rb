@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'English'
+
 module Aw
   # The Fork class.
   class Fork
