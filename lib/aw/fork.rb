@@ -11,7 +11,7 @@ module Aw
     # @param write [IO] The write endpoint.
     def initialize(read, write)
       # Currently, not available on all platforms.
-      raise 'fork() unimplemented' unless ::Process.respond_to?(:fork)
+      raise NotImplementedError, 'fork()' unless ::Process.respond_to?(:fork)
 
       @read   = read
       @write  = write
