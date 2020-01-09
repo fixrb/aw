@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-require_relative File.join('support', 'coverage')
-require_relative File.join('..', 'lib', 'aw')
+require 'simplecov'
+
+SimpleCov.start
+
+require_relative File.join('lib', 'aw')
 
 # It is expected to equal 42
 raise unless 42.equal?(Aw.fork! { 6 * 7 })

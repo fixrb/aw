@@ -1,25 +1,14 @@
 # Aw
 
-[![Build Status](https://travis-ci.org/fixrb/aw.svg?branch=master)][travis]
+[![Build Status](https://api.travis-ci.org/fixrb/aw.svg?branch=master)][travis]
 [![Code Climate](https://codeclimate.com/github/fixrb/aw/badges/gpa.svg)][codeclimate]
 [![Gem Version](https://badge.fury.io/rb/aw.svg)][gem]
-[![Inline docs](http://inch-ci.org/github/fixrb/aw.svg?branch=master)][inchpages]
-[![Documentation](http://img.shields.io/:yard-docs-38c800.svg)][rubydoc]
+[![Inline docs](https://inch-ci.org/github/fixrb/aw.svg?branch=master)][inchpages]
+[![Documentation](https://img.shields.io/:yard-docs-38c800.svg)][rubydoc]
 
-> Aw, fork!
+> Aw, fork! 😬
 
 Creates a subprocess to execute a block inside.
-
-## Contact
-
-* Home page: https://github.com/fixrb/aw
-* Bugs/issues: https://github.com/fixrb/aw/issues
-* Support: https://stackoverflow.com/questions/tagged/fixrb
-
-## Rubies
-
-* [MRI](https://www.ruby-lang.org/)
-* [Rubinius](https://rubinius.com/)
 
 ## Installation
 
@@ -61,43 +50,35 @@ Exceptions raised within the block are propagated:
 Aw.fork! { nil + 1 } # => NoMethodError (undefined method `+' for nil:NilClass)
 ```
 
-## Security
+## Contact
 
-As a basic form of security __Aw__ provides a set of SHA512 checksums for
-every Gem release.  These checksums can be found in the `checksum/` directory.
-Although these checksums do not prevent malicious users from tampering with a
-built Gem they can be used for basic integrity verification purposes.
+* Home page: https://github.com/fixrb/aw
+* Bugs/issues: https://github.com/fixrb/aw/issues
 
-The checksum of a file can be checked using the `sha512sum` command.  For
-example:
+## Rubies
 
-    $ sha512sum pkg/aw-0.1.0.gem
-    548d9f669ded4e622182791a5390aaceae0bf2e557b0864f05a842b0be2c65e10e1fb8499f49a3b9efd0e8eaeb691351b1c670d6316ce49965a99683b1071389  pkg/aw-0.1.0.gem
+* [MRI](https://www.ruby-lang.org/)
+* [Rubinius](https://rubinius.com/)
 
 ## Versioning
 
 __Aw__ follows [Semantic Versioning 2.0](https://semver.org/).
 
-## Contributing
-
-1. [Fork it](https://github.com/fixrb/aw/fork)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
 ## License
 
-See `LICENSE.md` file.
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+***
+
+<p>
+  This project is sponsored by:<br />
+  <a href="https://sashite.com/"><img
+    src="https://github.com/fixrb/aw/raw/master/img/sashite.png"
+    alt="Sashite" /></a>
+</p>
 
 [gem]: https://rubygems.org/gems/aw
 [travis]: https://travis-ci.org/fixrb/aw
 [codeclimate]: https://codeclimate.com/github/fixrb/aw
-[inchpages]: http://inch-ci.org/github/fixrb/aw
-[rubydoc]: http://rubydoc.info/gems/aw/frames
-
-***
-
-This project is sponsored by:
-
-[![Sashite](https://pbs.twimg.com/profile_images/618485028322975744/PZ9qPuI__400x400.png)](https://sashite.com/)
+[inchpages]: https://inch-ci.org/github/fixrb/aw
+[rubydoc]: https://rubydoc.info/gems/aw
