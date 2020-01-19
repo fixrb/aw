@@ -5,7 +5,6 @@ Gem::Specification.new do |spec|
   spec.version      = File.read('VERSION.semver').chomp
   spec.author       = 'Cyril Kato'
   spec.email        = 'contact@cyril.email'
-
   spec.summary      = 'Aw, fork! 😬'
   spec.description  = 'Creates a subprocess to execute a block inside.'
   spec.homepage     = 'https://github.com/fixrb/aw'
