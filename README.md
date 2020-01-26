@@ -52,13 +52,7 @@ Aw.fork! { nil + 1 } # => NoMethodError (undefined method `+' for nil:NilClass)
 
 ## Contact
 
-* Home page: https://github.com/fixrb/aw
-* Bugs/issues: https://github.com/fixrb/aw/issues
-
-## Rubies
-
-* [MRI](https://www.ruby-lang.org/)
-* [Rubinius](https://rubinius.com/)
+* Source code: https://github.com/fixrb/aw
 
 ## Versioning
 
