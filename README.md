@@ -1,9 +1,9 @@
 # Aw
 
-[![Build Status](https://api.travis-ci.org/fixrb/aw.svg?branch=master)][travis]
+[![Build Status](https://api.travis-ci.org/fixrb/aw.svg?branch=main)][travis]
 [![Code Climate](https://codeclimate.com/github/fixrb/aw/badges/gpa.svg)][codeclimate]
 [![Gem Version](https://badge.fury.io/rb/aw.svg)][gem]
-[![Inline docs](https://inch-ci.org/github/fixrb/aw.svg?branch=master)][inchpages]
+[![Inline docs](https://inch-ci.org/github/fixrb/aw.svg?branch=main)][inchpages]
 [![Documentation](https://img.shields.io/:yard-docs-38c800.svg)][rubydoc]
 
 > Aw, fork! 😬
@@ -67,7 +67,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 <p>
   This project is sponsored by:<br />
   <a href="https://sashite.com/"><img
-    src="https://github.com/fixrb/aw/raw/master/img/sashite.png"
+    src="https://github.com/fixrb/aw/raw/main/img/sashite.png"
     alt="Sashite" /></a>
 </p>
 
