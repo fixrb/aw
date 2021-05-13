@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'English'
+require "English"
 
 module Aw
   # The Fork class.
@@ -11,7 +11,7 @@ module Aw
     # @param write [IO] The write endpoint.
     def initialize(read, write)
       # Currently, not available on all platforms.
-      raise ::NotImplementedError, 'fork()' unless ::Process.respond_to?(:fork)
+      raise ::NotImplementedError, "fork()" unless ::Process.respond_to?(:fork)
 
       @read   = read
       @write  = write

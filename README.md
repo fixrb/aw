@@ -15,7 +15,7 @@ Creates a subprocess to execute a block inside.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'aw'
+gem "aw"
 ```
 
 And then execute:
@@ -37,9 +37,9 @@ Aw.fork! { 6 * 7 } # => 42
 Of course, it prevents from side effects:
 
 ```ruby
-arr = ['foo']
+arr = ["foo"]
 
-Aw.fork! { arr << 'FUU' } # => ["foo", "FUU"]
+Aw.fork! { arr << "FUU" } # => ["foo", "FUU"]
 
 arr # => ["foo"]
 ```

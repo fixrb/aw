@@ -17,4 +17,4 @@ module Aw
   end
 end
 
-require_relative File.join('aw', 'fork')
+require_relative File.join("aw", "fork")
