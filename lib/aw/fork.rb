@@ -29,6 +29,9 @@ module Aw
 
     # Run the block inside a subprocess, and return the value.
     #
+    # @example Fork and return 42 from 6 * 7.
+    #   call { 6 * 7 } # => 42
+    #
     # @return [#object_id] The result.
     def call(*, **, &block)
       pid = fork_and_return_pid(&block)
@@ -37,9 +40,7 @@ module Aw
       ::Process.wait(pid)
 
       # rubocop:disable Security/MarshalLoad
-      ::Marshal.load(result).tap do |r|
-        raise r if r.is_a?(::Exception)
-      end
+      ::Marshal.load(result).tap { |r| raise r if r.is_a?(::Exception) }
       # rubocop:enable Security/MarshalLoad
     end
 

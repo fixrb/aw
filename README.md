@@ -20,11 +20,15 @@ gem "aw"
 
 And then execute:
 
-    $ bundle
+```sh
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install aw
+```sh
+gem install aw
+```
 
 ## Usage
 
@@ -60,7 +64,7 @@ __Aw__ follows [Semantic Versioning 2.0](https://semver.org/).
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The [gem](https://rubygems.org/gems/aw) is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ***
 

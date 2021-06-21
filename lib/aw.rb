@@ -11,6 +11,9 @@ module Aw
   #
   # @param block [Proc] The code to run in a subprocess.
   #
+  # @example Fork and return 42 from 6 * 7.
+  #   fork! { 6 * 7 } # => 42
+  #
   # @return [#object_id] The result.
   def self.fork!(&block)
     Fork.new(*::IO.pipe).call(&block)
