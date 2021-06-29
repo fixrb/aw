@@ -1,10 +1,10 @@
 # Aw
 
-[![Build Status](https://api.travis-ci.org/fixrb/aw.svg?branch=main)][travis]
-[![Code Climate](https://codeclimate.com/github/fixrb/aw/badges/gpa.svg)][codeclimate]
-[![Gem Version](https://badge.fury.io/rb/aw.svg)][gem]
-[![Inline docs](https://inch-ci.org/github/fixrb/aw.svg?branch=main)][inchpages]
-[![Documentation](https://img.shields.io/:yard-docs-38c800.svg)][rubydoc]
+[![Version](https://img.shields.io/github/v/tag/fixrb/aw?label=Version&logo=github)](https://github.com/fixrb/aw/releases)
+[![Yard documentation](https://img.shields.io/badge/Yard-documentation-blue.svg?)](https://rubydoc.info/github/fixrb/aw/main)
+[![CI](https://github.com/fixrb/aw/workflows/CI/badge.svg?branch=main)](https://github.com/fixrb/aw/actions?query=workflow%3Aci+branch%3Amain)
+[![RuboCop](https://github.com/fixrb/aw/workflows/RuboCop/badge.svg?branch=main)](https://github.com/fixrb/aw/actions?query=workflow%3Arubocop+branch%3Amain)
+[![License](https://img.shields.io/github/license/fixrb/aw?label=License&logo=github)](https://github.com/fixrb/aw/raw/main/LICENSE.md)
 
 > Aw, fork! 😬
 
@@ -74,9 +74,3 @@ The [gem](https://rubygems.org/gems/aw) is available as open source under the te
     src="https://github.com/fixrb/aw/raw/main/img/sashite.png"
     alt="Sashite" /></a>
 </p>
-
-[gem]: https://rubygems.org/gems/aw
-[travis]: https://travis-ci.org/fixrb/aw
-[codeclimate]: https://codeclimate.com/github/fixrb/aw
-[inchpages]: https://inch-ci.org/github/fixrb/aw
-[rubydoc]: https://rubydoc.info/gems/aw
