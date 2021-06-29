@@ -1,7 +1,7 @@
 # Aw
 
 [![Version](https://img.shields.io/github/v/tag/fixrb/aw?label=Version&logo=github)](https://github.com/fixrb/aw/releases)
-[![Yard documentation](https://img.shields.io/badge/Yard-documentation-blue.svg?)](https://rubydoc.info/github/fixrb/aw/main)
+[![Yard documentation](https://img.shields.io/badge/Yard-documentation-blue.svg?logo=github)](https://rubydoc.info/github/fixrb/aw/main)
 [![CI](https://github.com/fixrb/aw/workflows/CI/badge.svg?branch=main)](https://github.com/fixrb/aw/actions?query=workflow%3Aci+branch%3Amain)
 [![RuboCop](https://github.com/fixrb/aw/workflows/RuboCop/badge.svg?branch=main)](https://github.com/fixrb/aw/actions?query=workflow%3Arubocop+branch%3Amain)
 [![License](https://img.shields.io/github/license/fixrb/aw?label=License&logo=github)](https://github.com/fixrb/aw/raw/main/LICENSE.md)
