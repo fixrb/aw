@@ -8,7 +8,7 @@
 
 > Aw, fork! 😬
 
-Creates a subprocess to execute a block inside.
+Creates a sub-process to execute a block inside, and return the result.
 
 ## Installation
 
@@ -32,13 +32,13 @@ gem install aw
 
 ## Usage
 
-It executes the block in a subprocess, and returns the result in the current process:
+Execute a block of code in a sub-process, and return the result to the current process:
 
 ```ruby
 Aw.fork! { 6 * 7 } # => 42
 ```
 
-Of course, it prevents from side effects:
+Therefore, when the execution of a block of code causes side effects, they are limited to the sub-process:
 
 ```ruby
 arr = ["foo"]
@@ -48,7 +48,7 @@ Aw.fork! { arr << "FUU" } # => ["foo", "FUU"]
 arr # => ["foo"]
 ```
 
-Exceptions raised within the block are propagated:
+Exceptions raised within a block of code are propagated:
 
 ```ruby
 Aw.fork! { nil + 1 } # => NoMethodError (undefined method `+' for nil:NilClass)

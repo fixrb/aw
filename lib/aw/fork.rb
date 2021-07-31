@@ -4,6 +4,8 @@ require "English"
 
 module Aw
   # The Fork class.
+  #
+  # @api private
   class Fork
     # Initialize the class.
     #
@@ -27,12 +29,12 @@ module Aw
     # @return [IO] The write endpoint.
     attr_reader :write
 
-    # Run the block inside a subprocess, and return the value.
+    # Runs the block inside a sub-process, and returns the computed value.
     #
-    # @example Fork and return 42 from 6 * 7.
+    # @example Computes `6 * 7` in a sub-process and returns `42` to the current process.
     #   call { 6 * 7 } # => 42
     #
-    # @return [#object_id] The result.
+    # @return [#object_id] The computed value.
     def call(*, **, &block)
       pid = fork_and_return_pid(&block)
       write.close
@@ -46,8 +48,12 @@ module Aw
 
     private
 
+    # Creates a sub-process to execute a block inside, and returns the process
+    # ID.
     def fork_and_return_pid
       fork do
+        # :nocov:
+
         read.close
 
         # rubocop:disable Lint/RescueException
@@ -60,6 +66,8 @@ module Aw
 
         ::Marshal.dump(result, write)
         exit!(true)
+
+        # :nocov:
       end
     end
   end

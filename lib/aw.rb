@@ -2,19 +2,19 @@
 
 # Namespace for the Aw library.
 #
-# @api public
-#
-# @example Fork and return 42 from 6 * 7.
+# @example Computes `6 * 7` in a sub-process and returns `42` to the current process.
 #   Aw.fork! { 6 * 7 } # => 42
+#
+# @api public
 module Aw
-  # Run the block inside a subprocess, and return the value.
+  # Runs the block inside a sub-process, and returns the computed value.
   #
-  # @param block [Proc] The code to run in a subprocess.
+  # @param block [Proc] The code to run in a sub-process.
   #
-  # @example Fork and return 42 from 6 * 7.
+  # @example Computes `6 * 7` in a sub-process and returns `42` to the current process.
   #   fork! { 6 * 7 } # => 42
   #
-  # @return [#object_id] The result.
+  # @return [#object_id] The computed value.
   def self.fork!(&block)
     Fork.new(*::IO.pipe).call(&block)
   end
