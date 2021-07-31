@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    aw (0.1.12)
+    aw (0.1.13)
 
 GEM
   remote: https://rubygems.org/
@@ -60,4 +60,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.2.17
+   2.2.25

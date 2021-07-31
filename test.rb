@@ -2,6 +2,7 @@
 
 require "simplecov"
 
+SimpleCov.command_name "Ruby tests"
 SimpleCov.start
 
 require_relative File.join("lib", "aw")

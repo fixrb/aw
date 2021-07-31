@@ -35,7 +35,7 @@ module Aw
     #   call { 6 * 7 } # => 42
     #
     # @return [#object_id] The computed value.
-    def call(*, **, &block)
+    def call(&block)
       pid = fork_and_return_pid(&block)
       write.close
       result = read.read
@@ -48,8 +48,10 @@ module Aw
 
     private
 
-    # Creates a sub-process to execute a block inside, and returns the process
-    # ID.
+    # Creates a sub-process to execute a block inside, and returns the
+    # sub-process ID.
+    #
+    # @return [Integer] The ID of the created sub-process.
     def fork_and_return_pid
       fork do
         # :nocov:

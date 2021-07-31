@@ -16,7 +16,8 @@ module Aw
   #
   # @return [#object_id] The computed value.
   def self.fork!(&block)
-    Fork.new(*::IO.pipe).call(&block)
+    read, write = ::IO.pipe
+    Fork.new(read, write).call(&block)
   end
 end
 
