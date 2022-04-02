@@ -36,3 +36,25 @@ begin
 rescue SystemExit
   raise unless $ERROR_INFO.message == "exit"
 end
+
+# It is expected to return true
+raise unless true.equal?(Aw.fork? { 6 * 7 })
+
+# It is expected to return true
+raise unless true.equal?(Aw.fork? { "bar" })
+
+# It is expected to return true
+# rubocop:disable Lint/EmptyBlock
+raise unless true.equal?(Aw.fork? {})
+# rubocop:enable Lint/EmptyBlock
+
+# It is expected to prevent side effects and return true
+arr = ["foo"]
+raise unless true.equal?(Aw.fork? { arr << "FUU" })
+raise unless arr == ["foo"]
+
+# It is expected to return false
+raise unless false.equal?(Aw.fork? { raise "BOOM" })
+
+# It is expected to return false
+raise unless false.equal?(Aw.fork? { exit(1) })

@@ -34,7 +34,8 @@ module Aw
     # @example Computes `6 * 7` in a sub-process and returns `42` to the current process.
     #   call { 6 * 7 } # => 42
     #
-    # @return [#object_id] The computed value.
+    # @raise [Exception] Exceptions raised in a block of code are propagated.
+    # @return [#object_id] Returns the value that has been returned in the block.
     def call(&block)
       pid = fork_and_return_pid(&block)
       write.close
@@ -53,7 +54,7 @@ module Aw
     #
     # @return [Integer] The ID of the created sub-process.
     def fork_and_return_pid
-      fork do
+      ::Process.fork do
         # :nocov:
 
         read.close
@@ -67,7 +68,7 @@ module Aw
         # rubocop:enable Lint/RescueException
 
         ::Marshal.dump(result, write)
-        exit!(true)
+        ::Process.exit!(true)
 
         # :nocov:
       end
