@@ -12,8 +12,6 @@
 module Aw
   # Runs the block inside a sub-process, and returns the computed value.
   #
-  # @param block [Proc] The code to run in a sub-process.
-  #
   # @example Computes `6 * 7` in a sub-process and returns `42` to the current process.
   #   Aw.fork! { 6 * 7 } # => 42
   #
@@ -22,15 +20,13 @@ module Aw
   #
   # @raise [Exception] Exceptions raised in a block of code are propagated.
   # @return [#object_id] Returns the value that has been returned in the block.
-  def self.fork!(&block)
+  def self.fork!(&)
     read, write = ::IO.pipe
-    Fork.new(read, write).call(&block)
+    Fork.new(read, write).call(&)
   end
 
   # Runs the block inside a sub-process, and returns `true` if no exception is
   # thrown. Otherwise when an exception is raised, `false` is returned.
-  #
-  # @param block [Proc] The code to run in a sub-process.
   #
   # @example Computes `6 * 7` in a sub-process and returns `true` to the current process.
   #   Aw.fork? { 6 * 7 } # => true
@@ -39,8 +35,8 @@ module Aw
   #   Aw.fork? { nil + 1 } # => false
   #
   # @return [Boolean] Returns `true` if stat is successful, `false` if not.
-  def self.fork?(&block)
-    pid = ::Process.fork(&block)
+  def self.fork?(&)
+    pid = ::Process.fork(&)
     _, status = ::Process.wait2(pid)
     status.success?
   end

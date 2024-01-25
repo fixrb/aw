@@ -1,8 +1,8 @@
 # Aw
 
-[![Version](https://img.shields.io/github/v/tag/fixrb/aw?label=Version&logo=github)](https://github.com/fixrb/aw/releases)
+[![Version](https://img.shields.io/github/v/tag/fixrb/aw?label=Version&logo=github)](https://github.com/fixrb/aw/tags)
 [![Yard documentation](https://img.shields.io/badge/Yard-documentation-blue.svg?logo=github)](https://rubydoc.info/github/fixrb/aw/main)
-[![CI](https://github.com/fixrb/aw/workflows/CI/badge.svg?branch=main)](https://github.com/fixrb/aw/actions?query=workflow%3Aci+branch%3Amain)
+[![Ruby](https://github.com/fixrb/aw/workflows/Ruby/badge.svg?branch=main)](https://github.com/fixrb/aw/actions?query=workflow%3Aruby+branch%3Amain)
 [![RuboCop](https://github.com/fixrb/aw/workflows/RuboCop/badge.svg?branch=main)](https://github.com/fixrb/aw/actions?query=workflow%3Arubocop+branch%3Amain)
 [![License](https://img.shields.io/github/license/fixrb/aw?label=License&logo=github)](https://github.com/fixrb/aw/raw/main/LICENSE.md)
 
@@ -115,5 +115,5 @@ The [gem](https://rubygems.org/gems/aw) is available as open source under the te
   This project is sponsored by:<br />
   <a href="https://sashite.com/"><img
     src="https://github.com/fixrb/aw/raw/main/img/sashite.png"
-    alt="Sashite" /></a>
+    alt="Sashité" /></a>
 </p>

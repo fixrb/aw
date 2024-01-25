@@ -36,8 +36,8 @@ module Aw
     #
     # @raise [Exception] Exceptions raised in a block of code are propagated.
     # @return [#object_id] Returns the value that has been returned in the block.
-    def call(&block)
-      pid = fork_and_return_pid(&block)
+    def call(&)
+      pid = fork_and_return_pid(&)
       write.close
       result = read.read
       ::Process.wait(pid)
