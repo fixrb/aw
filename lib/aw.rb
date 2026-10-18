@@ -1,45 +1,73 @@
 # frozen_string_literal: true
 
-# Namespace for the Aw library.
+require_relative "aw/child_error"
+require_relative "aw/fork"
+
+# Runs a block in a forked child process and brings back what it returned,
+# or re-raises what it raised. Side effects of the block on the process
+# (mutations, globals, constants, the current directory, `ENV`, a crash)
+# stay in the child; what it does outside, to files or to other processes,
+# does not.
 #
-# @example Computes `6 * 7` in a sub-process and returns `42` to the current process.
-#   Aw.fork! { 6 * 7 } # => 42
+# The result travels through a pipe with `Marshal`, so it must be a
+# marshalable value; a `Proc`, an `IO` or an instance of an anonymous class
+# cannot come back. `fork(2)` is required: Windows, JRuby and any other
+# implementation without it are not supported, and {Aw.supported?} says so.
 #
-# @example Computes `6 * 7` in a sub-process and returns `true` to the current process if no exception is thrown.
-#   Aw.fork? { 6 * 7 } # => true
-#
-# @api public
+# @example
+#   list = []
+#   Aw.fork! { list << 1 } # => [1]
+#   list                   # => []
 module Aw
-  # Runs the block inside a sub-process, and returns the computed value.
-  #
-  # @example Computes `6 * 7` in a sub-process and returns `42` to the current process.
-  #   Aw.fork! { 6 * 7 } # => 42
-  #
-  # @example Computes `nil + 1` in a sub-process and raises `NoMethodError` to the current process.
-  #   Aw.fork! { nil + 1 } # => raise NoMethodError (undefined method `+' for nil:NilClass)
-  #
-  # @raise [Exception] Exceptions raised in a block of code are propagated.
-  # @return [#object_id] Returns the value that has been returned in the block.
-  def self.fork!(&)
-    read, write = ::IO.pipe
-    Fork.new(read, write).call(&)
+  # @return [Boolean] whether this Ruby can fork
+  def self.supported?
+    ::Process.respond_to?(:fork)
   end
 
-  # Runs the block inside a sub-process, and returns `true` if no exception is
-  # thrown. Otherwise when an exception is raised, `false` is returned.
+  # Runs the block in a child process and returns its value.
   #
-  # @example Computes `6 * 7` in a sub-process and returns `true` to the current process.
-  #   Aw.fork? { 6 * 7 } # => true
+  # @yieldreturn [Object] a marshalable value
+  # @return [Object] the value returned by the block, loaded from the child
+  # @raise [ArgumentError] when no block is given
+  # @raise [NotImplementedError] when this Ruby cannot fork
+  # @raise [Exception] whatever the block raised, re-raised in the parent
+  # @raise [Aw::ChildError] when the child delivered no result (it died, the block called `exit!` or
+  #   left with `break`, `return` or `throw`), or its result cannot be transferred or loaded
+  def self.fork!(&block)
+    raise ::ArgumentError, "a block must be provided" if block.nil?
+
+    kind, value = Fork.run(block)
+    # The cause is the one the exception had in the child, never the
+    # exception the parent may be handling.
+    raise value, cause: value.cause if kind == :raise
+
+    value
+  end
+
+  # Runs the block in a child process and tells whether it returned.
   #
-  # @example Computes `nil + 1` in a sub-process and returns `false` to the current process.
-  #   Aw.fork? { nil + 1 } # => false
+  # Only what happens in the child is reported: an exception raised in the
+  # parent while waiting, such as an `Interrupt` or a `Timeout::Error`,
+  # propagates. Neither the value nor the exception of the block travels,
+  # so this works whatever they are.
   #
-  # @return [Boolean] Returns `true` if stat is successful, `false` if not.
-  def self.fork?(&)
-    pid = ::Process.fork(&)
-    _, status = ::Process.wait2(pid)
-    status.success?
+  # @yieldreturn [Object] ignored
+  # @return [Boolean] true when the block returned, false when it raised
+  # @raise [ArgumentError] when no block is given
+  # @raise [NotImplementedError] when this Ruby cannot fork
+  # @raise [Aw::ChildError] when the child died, or the block called `exit!` or left with `break`,
+  #   `return` or `throw`
+  def self.fork?(&block)
+    raise ::ArgumentError, "a block must be provided" if block.nil?
+
+    returned = lambda do
+      yield
+      true
+    rescue ::Exception # rubocop:disable Lint/RescueException
+      false
+    end
+
+    _, value = Fork.run(returned)
+    value.equal?(true)
   end
 end
-
-require_relative File.join("aw", "fork")

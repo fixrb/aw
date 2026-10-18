@@ -1,8 +1,11 @@
+# Build and tool output
 /.bundle/
-/.yardoc
-/_yardoc/
+/.yardoc/
 /coverage/
 /doc/
 /pkg/
-/spec/reports/
-/tmp/
+/vendor/bundle/
+*.gem
+
+# macOS
+.DS_Store

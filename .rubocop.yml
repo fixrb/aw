@@ -1,31 +1,67 @@
-inherit_mode:
-  merge:
-    - Exclude
-
+# The target Ruby version is read from `required_ruby_version` in the gemspec.
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.2
 
-require:
+plugins:
   - rubocop-md
   - rubocop-performance
   - rubocop-rake
   - rubocop-thread_safety
 
-Style/StringLiterals:
-  Enabled: true
-  EnforcedStyle: double_quotes
-
-Style/StringLiteralsInInterpolation:
-  Enabled: true
-  EnforcedStyle: double_quotes
-
-Style/SymbolArray:
-  Enabled: true
-
+# Most readable form.
 Layout/HashAlignment:
   EnforcedHashRocketStyle: table
   EnforcedColonStyle: table
 
-Layout/LineLength:
-  Max: 120
+# The tests are a flat list of `raise unless …` checks, each one a sentence:
+# an empty line after each would double their length for nothing.
+Layout/EmptyLineAfterGuardClause:
+  Exclude:
+    - test/**/*
+
+# Fork.run holds the whole parent side in one place, on purpose: the fork,
+# the guard against interruptions, the read, the wait and the cleanup.
+Metrics/MethodLength:
+  AllowedMethods:
+    - run
+
+# Fork is the whole mechanism, child side and parent side, in one module:
+# small methods, each guarding one thing, add up to a few lines over the
+# default.
+Metrics/ModuleLength:
+  Max: 110
+
+# Every class, module and method of the library carries a comment; YARD
+# (`--fail-on-warning` in .yardopts) checks that its tags match the code.
+# RuboCop sees the methods that `private_class_method` hides as public.
+# Enabled explicitly: the next major release of RuboCop is expected to
+# disable `Style/Documentation` by default.
+Style/Documentation:
+  Enabled: true
+  Include:
+    - lib/**/*.rb
+
+Style/DocumentationMethod:
+  Enabled: true
+  Include:
+    - lib/**/*.rb
+
+# The tests exercise what the gem isolates: globals, the current directory,
+# threads that interrupt the main one.
+Style/GlobalVars:
+  Exclude:
+    - test/**/*
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+ThreadSafety/DirChdir:
+  Exclude:
+    - test/**/*
+
+ThreadSafety/NewThread:
+  Exclude:
+    - test/**/*
