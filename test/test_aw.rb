@@ -570,13 +570,19 @@ scheduler.define_singleton_method(:io_wait) do |io, events, _timeout|
   IO.select(events.anybits?(IO::READABLE) ? [io] : nil, events.anybits?(IO::WRITABLE) ? [io] : nil)
   events
 end
+scheduler.define_singleton_method(:fiber_interrupt) { |*| nil }
 scheduler.define_singleton_method(:close) { nil }
 scheduled = nil
+# Ruby 4.0 reads through an IO::Buffer in a scheduled fiber, and warns that
+# it is experimental.
+experimental = Warning[:experimental]
+Warning[:experimental] = false
 Fiber.set_scheduler(scheduler)
 begin
   Fiber.schedule { scheduled = Aw.fork! { sleep 0.001; :slept } } # rubocop:disable Style/Semicolon
 ensure
   Fiber.set_scheduler(nil)
+  Warning[:experimental] = experimental
 end
 raise "got #{scheduled.inspect}" unless scheduled == :slept
 
