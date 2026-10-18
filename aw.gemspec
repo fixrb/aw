@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version                = File.read(File.join(__dir__, "VERSION.semver")).chomp
   spec.author                 = "Cyril Kato"
   spec.email                  = "contact@cyril.email"
-  spec.summary                = "Aw, fork 😬"
+  spec.summary                = "Aw, fork❗"
   spec.description            = "Runs a block in a forked child process and brings back what it returned, " \
                                 "or re-raises what it raised. Side effects on the process stay in the child."
   spec.homepage               = "https://fixrb.dev/gems/aw/"

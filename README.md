@@ -4,9 +4,9 @@
 [![Yard documentation](https://img.shields.io/badge/Yard-documentation-blue.svg?logo=github)](https://rubydoc.info/github/fixrb/aw/main)
 [![License](https://img.shields.io/github/license/fixrb/aw?label=License&logo=github)](https://github.com/fixrb/aw/raw/main/LICENSE.md)
 
-> Aw, fork 😬
+> Aw, fork❗
 
-![Aw](https://github.com/fixrb/aw/raw/main/img/aw.jpg)
+![A pixel-art hero shouting "Aw, fork!" while his forked clone strikes a golem](https://github.com/fixrb/aw/raw/main/img/aw.png)
 
 Runs a block in a forked child process and brings back what it returned, or re-raises what it raised. What the block does to the process stays in the child; what it does outside, to files or to other processes, does not.
 
