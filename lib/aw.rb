@@ -31,8 +31,8 @@ module Aw
   # @raise [ArgumentError] when no block is given
   # @raise [NotImplementedError] when this Ruby cannot fork
   # @raise [Exception] whatever the block raised, re-raised in the parent
-  # @raise [Aw::ChildError] when the child delivered no result (it died, the block called `exit!` or
-  #   left with `break`, `return` or `throw`), or its result cannot be transferred or loaded
+  # @raise [Aw::ChildError] when the child delivered no result (it died, the block called `exit!`,
+  #   left with `break`, `return` or `throw`, or closed the pipe), or its result cannot be transferred or loaded
   def self.fork!(&block)
     raise ::ArgumentError, "a block must be provided" if block.nil?
 
@@ -55,8 +55,8 @@ module Aw
   # @return [Boolean] true when the block returned, false when it raised
   # @raise [ArgumentError] when no block is given
   # @raise [NotImplementedError] when this Ruby cannot fork
-  # @raise [Aw::ChildError] when the child died, or the block called `exit!` or left with `break`,
-  #   `return` or `throw`
+  # @raise [Aw::ChildError] when the child died, or the block called `exit!`, left with `break`,
+  #   `return` or `throw`, or closed the pipe
   def self.fork?(&block)
     raise ::ArgumentError, "a block must be provided" if block.nil?
 

@@ -17,17 +17,25 @@ module Aw
     HEADER_SIZE = 8
     CHUNK = 65_536
 
-    # Exit status of a child that failed to deliver, as opposed to a block
-    # that called `exit!` itself. EX_SOFTWARE in sysexits(3).
+    # Exit statuses of a child that failed to deliver, as opposed to a block
+    # that called `exit!` itself: EX_SOFTWARE and EX_IOERR in sysexits(3).
     FAILURE = 70
+    UNWRITTEN = 74
     LEFT = "the block left without returning or raising (break, return or throw), " \
            "so the child delivered no result"
+    LOST = "the child could not write its result to the parent (the block closed or " \
+           "replaced the pipe between them)"
+
+    # How long a child asked to leave with TERM is given before KILL, in
+    # seconds, and how often it is checked meanwhile.
+    GRACE = 0.5
+    TICK = 0.01
 
     # Captured once, so that a block redefining `Process.exit!` in the child
     # cannot make the child fall through to the parent's `at_exit` handlers.
     EXIT = ::Process.method(:exit!)
 
-    private_constant :HEADER, :HEADER_SIZE, :CHUNK, :FAILURE, :LEFT, :EXIT
+    private_constant :HEADER, :HEADER_SIZE, :CHUNK, :FAILURE, :UNWRITTEN, :LEFT, :LOST, :GRACE, :TICK, :EXIT
 
     # @param block [Proc] the code to run in the child
     # @return [Array(Symbol, Object)] `[:return, value]` or `[:raise, exception]`
@@ -64,16 +72,29 @@ module Aw
     # parent set does not see the block, which would otherwise hand the
     # child over to the parent's other fibers.
     def self.child(block, reader, writer)
+      pid = ::Process.pid
       ::Fiber.blocking do
         ::Thread.handle_interrupt(::Object => :immediate) do
           reader.close
-          data = dump(evaluate(block))
-          writer.write([data.bytesize].pack(HEADER), data)
+          write(writer, dump(evaluate(block)), pid)
           leave(0)
         ensure
           leave(FAILURE)
         end
       end
+    end
+
+    # Writes the length-prefixed message, from the child alone: a process
+    # the block forked without a block of its own, and which let the block
+    # return, reaches this code too, with a copy of the pipe, and leaves at
+    # once, writing nothing. A child that cannot write, because the block
+    # closed the pipe or replaced its file descriptor with another file,
+    # leaves with the status that says so.
+    def self.write(writer, data, pid)
+      leave(0) unless ::Process.pid == pid
+      writer.write([data.bytesize].pack(HEADER), data)
+    rescue ::Exception # rubocop:disable Lint/RescueException
+      leave(UNWRITTEN)
     end
 
     # Flushes the standard streams of the child and leaves with the status.
@@ -145,6 +166,7 @@ module Aw
     # exited normally; raises a ChildError that says why otherwise.
     def self.deliver(data, status)
       raise ChildError.new(LEFT, status:) if status.exitstatus == FAILURE
+      raise ChildError.new(LOST, status:) if status.exitstatus == UNWRITTEN
       raise ChildError.new("the child did not deliver a result", status:) unless status.success? && data
 
       kind, value = load(data, status)
@@ -170,20 +192,42 @@ module Aw
       end
     end
 
-    # Reaps a child the parent gave up waiting for, killing it first if it
-    # is still running. The child is checked before being killed: a wait2
-    # interrupted right after it reaped would otherwise lead to a kill on a
-    # pid that may already belong to another process.
+    # Reaps a child the parent gave up waiting for: asked to leave, then
+    # killed if it is still there when the grace is over. Nothing interrupts
+    # the reaping, so that no child is left behind: a second interruption of
+    # the parent waits for it.
     def self.reap(pid)
       return if pid.nil?
-      return if ::Process.wait2(pid, ::Process::WNOHANG)
 
-      ::Process.kill(:KILL, pid)
-      ::Process.wait(pid)
+      ::Thread.handle_interrupt(::Object => :never) do
+        next if left?(pid)
+
+        ::Process.kill(:KILL, pid)
+        ::Process.wait(pid)
+      end
     rescue ::Errno::ESRCH, ::Errno::ECHILD
       nil
     end
 
-    private_class_method :child, :leave, :evaluate, :dump, :opaque, :flush, :read, :deliver, :load, :reap
+    # Asks a child still running to leave with TERM, which lets it reap
+    # children of its own, and tells whether it had left and was reaped by
+    # the end of the grace, measured on the clock: a sleep may last longer
+    # than asked. The child is checked before the signal: a wait2
+    # interrupted right after it reaped would otherwise lead to a signal to
+    # a pid that may already belong to another process.
+    def self.left?(pid)
+      return true if ::Process.wait2(pid, ::Process::WNOHANG)
+
+      ::Process.kill(:TERM, pid)
+      deadline = ::Process.clock_gettime(::Process::CLOCK_MONOTONIC) + GRACE
+      until ::Process.clock_gettime(::Process::CLOCK_MONOTONIC) > deadline
+        sleep(TICK)
+        return true if ::Process.wait2(pid, ::Process::WNOHANG)
+      end
+      false
+    end
+
+    private_class_method :child, :write, :leave, :evaluate, :dump, :opaque, :flush, :read, :deliver, :load, :reap,
+                         :left?
   end
 end

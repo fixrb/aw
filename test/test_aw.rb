@@ -554,6 +554,96 @@ raise unless Dir.children("/dev/fd").size == before
 # Nested forks work.
 raise unless Aw.fork! { Aw.fork! { Aw.fork! { 3 } + 1 } + 1 } == 5
 
+# Only the child delivers. A process the block forks without a block, and
+# which lets the block return, reaches the end of the block with a copy of
+# the pipe: it leaves with status 0 and writes nothing, so the result is
+# the child's, not the first one written.
+delivered = Aw.fork! do
+  pid = Process.fork
+  pid ? [:child, Process.wait2(pid).last.exitstatus] : :grandchild
+end
+raise unless delivered == [:child, 0]
+
+# A block that closes every descriptor above the standard ones, as a daemon
+# does, closes the pipe: the child is told so, with EX_IOERR, instead of
+# being told that the block left without returning.
+begin
+  Aw.fork! do
+    3.upto(64) do |fd|
+      IO.for_fd(fd).close
+    rescue Errno::EBADF, ArgumentError # not open, or reserved by the VM
+      nil
+    end
+  end
+  raise "expected ChildError"
+rescue Aw::ChildError => e
+  raise unless e.message.start_with?("the child could not write its result") && e.status.exitstatus == 74
+end
+
+# A parent that gives up waiting asks the child to leave with TERM first,
+# which lets a nested fork reap its own child, and kills it only when it
+# has not left after the grace: no grandchild is orphaned.
+pid_holder = IO.pipe
+begin
+  Timeout.timeout(0.5) do
+    Aw.fork! do
+      Aw.fork! do
+        pid_holder[1].write(Process.pid.to_s)
+        pid_holder[1].close
+        sleep 60
+      end
+    end
+  end
+  raise "expected Timeout::Error"
+rescue Timeout::Error
+  pid_holder[1].close
+  grandchild_pid = pid_holder[0].read.to_i
+  pid_holder[0].close
+  raise "the grandchild did not tell its pid" if grandchild_pid.zero?
+  deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 2
+  loop do
+    Process.kill(0, grandchild_pid)
+    raise "grandchild #{grandchild_pid} is still alive" if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
+    sleep 0.01
+  rescue Errno::ESRCH
+    break
+  end
+end
+begin
+  raise "a child was left behind after a nested timeout" if Process.wait(-1, Process::WNOHANG)
+  raise "a child is still alive after a nested timeout"
+rescue Errno::ECHILD
+  nil
+end
+
+# A child that leaves on TERM is not killed: TERM, and KILL only once the
+# grace is over, for a child that ignores TERM.
+signals = []
+Process.singleton_class.alias_method(:aw_test_kill, :kill)
+Process.define_singleton_method(:kill) do |signal, pid|
+  signals << signal
+  aw_test_kill(signal, pid)
+end
+begin
+  Timeout.timeout(0.5) { Aw.fork! { trap(:TERM) { exit!(0) }; sleep 60 } } # rubocop:disable Style/Semicolon
+  raise "expected Timeout::Error"
+rescue Timeout::Error
+  raise "signals sent: #{signals.inspect}" unless signals == [:TERM]
+end
+signals.clear
+elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+begin
+  Timeout.timeout(0.5) { Aw.fork! { trap(:TERM, "IGNORE"); sleep 60 } } # rubocop:disable Style/Semicolon
+  raise "expected Timeout::Error"
+rescue Timeout::Error
+  raise "signals sent: #{signals.inspect}" unless signals == %i[TERM KILL]
+ensure
+  Process.singleton_class.send(:remove_method, :kill)
+  Process.singleton_class.alias_method(:kill, :aw_test_kill)
+  Process.singleton_class.send(:remove_method, :aw_test_kill)
+end
+raise "the child was not killed" unless Process.clock_gettime(Process::CLOCK_MONOTONIC) - elapsed < 2
+
 # A fiber scheduler the parent set does not see the block: in the child, a
 # sleep or an IO of the block is blocking, instead of transferring to the
 # parent's other fibers, copied by the fork. The parent's side goes through

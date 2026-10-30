@@ -8,8 +8,9 @@ module Aw
   # a `marshal_load` that raises).
   #
   # The status tells the cases apart: `signaled?` for a crash, `exitstatus`
-  # 70 for a block that left without returning or raising, 0 for a result
-  # that cannot be transferred or loaded, the block's own code for an
+  # 70 for a block that left without returning or raising, 74 for a result
+  # the child could not write because the block closed the pipe, 0 for a
+  # result that cannot be transferred or loaded, the block's own code for an
   # `exit!` or an `exec` of the block.
   class ChildError < ::StandardError
     # @return [Process::Status] the status of the child

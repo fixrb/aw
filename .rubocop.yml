@@ -26,10 +26,10 @@ Metrics/MethodLength:
     - run
 
 # Fork is the whole mechanism, child side and parent side, in one module:
-# small methods, each guarding one thing, add up to a few lines over the
-# default.
+# small methods, each guarding one thing, add up to more lines than the
+# default allows.
 Metrics/ModuleLength:
-  Max: 110
+  Max: 130
 
 # Every class, module and method of the library carries a comment; YARD
 # (`--fail-on-warning` in .yardopts) checks that its tags match the code.
