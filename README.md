@@ -92,6 +92,10 @@ The value that comes back is a copy: an object returns as a new object, and its 
 - SimpleCov stores the coverage of a process from an `at_exit` handler, which `exit!` skips: the code the child runs is not in the parent's report. With `merge_subprocesses true` (`enable_for_subprocesses true` before SimpleCov 1.3), call `SimpleCov.result` in an `ensure` of the block to store the child's share; the parent merges it.
 - The parent deserializes, with `Marshal`, what the child wrote; the child ran your block, which could reach the pipe and write anything. Aw isolates the side effects of code you trust; it is not a sandbox for code you do not. A hostile block can make `fork!` return or raise anything, make `fork?` answer `true`, choose the message of an `Aw::ChildError`, make the parent hold as much memory as it writes, run the parent's `marshal_load` methods and autoloads, and, from a continuation the parent captured (`callcc`), run the parent's code in the child: only the `status` of an `Aw::ChildError` comes from the system. Running as the parent's user, it can also signal the parent and leave processes behind; Aw kills and reaps the child only.
 
+## Changes in 1.0.2
+
+- Documentation: a fork that ignores `TERM` leaves orphans whether it is an outer one or an inner one, where 1.0.1 said so of an outer one only; Aw is tested on Linux and macOS, the BSDs no longer being named; what the block does outside the process happens.
+
 ## Changes in 1.0.1
 
 - A process the block forked without a block, and which let the block return, no longer delivers a result in place of the child: it leaves without writing, as the child alone writes.

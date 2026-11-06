@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version  = ">= 3.3.0"
 
   spec.metadata["bug_tracker_uri"]       = "https://github.com/fixrb/aw/issues"
-  spec.metadata["changelog_uri"]         = "https://github.com/fixrb/aw#changes-in-101"
+  spec.metadata["changelog_uri"]         = "https://github.com/fixrb/aw#changes-in-102"
   spec.metadata["documentation_uri"]     = "https://rubydoc.info/gems/aw"
   spec.metadata["rubygems_mfa_required"] = "true"
   spec.metadata["source_code_uri"]       = "https://github.com/fixrb/aw"
