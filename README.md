@@ -8,7 +8,7 @@
 
 ![A pixel-art hero shouting "Aw, fork!" while his forked clone strikes a golem](https://github.com/fixrb/aw/raw/main/img/aw.png)
 
-Runs a block in a forked child process and brings back what it returned, or re-raises what it raised. What the block does to the process stays in the child; what it does outside, to files or to other processes, does not.
+Runs a block in a forked child process and brings back what it returned, or re-raises what it raised. What the block does to the process stays in the child; what it does outside, to files or to other processes, happens.
 
 ## Installation
 
@@ -17,7 +17,7 @@ Runs a block in a forked child process and brings back what it returned, or re-r
 gem "aw"
 ```
 
-Aw requires Ruby 3.3 or later and `fork(2)`: it runs on Linux, macOS and the BSDs with CRuby, and declines elsewhere (Windows, JRuby) with a `NotImplementedError`. `Aw.supported?` tells beforehand.
+Aw requires Ruby 3.3 or later and `fork(2)`: it is tested with CRuby on Linux and macOS, and declines where `fork` is missing (Windows, JRuby) with a `NotImplementedError`. `Aw.supported?` tells beforehand.
 
 ## Usage
 
@@ -78,7 +78,7 @@ The value that comes back is a copy: an object returns as a new object, and its 
 - Aw has no timeout of its own: `fork!` and `fork?` wait until the child exits, whatever keeps it alive (a block that loops or sleeps, a child stopped by `SIGSTOP`, a standard stream whose `flush` blocks, a thread that goes on after the result was written). Wrap code you do not trust in a `Timeout` of your own.
 - If the parent is interrupted while waiting (`Interrupt`, `Timeout`, `Thread#kill`), the child is asked to leave with `TERM`, killed with `KILL` if it is still there half a second later, and reaped, before the interruption proceeds, with no window between the fork and that guard. A second interruption during the reaping waits for it: no zombie is left.
 - No file descriptor is left open after a call.
-- Forks can be nested. The `TERM` an interrupted parent sends to an outer fork reaches it as a `SignalException`, which lets it ask its own children to leave and reap them in turn; only an outer fork that ignores `TERM` leaves them orphaned when it is killed.
+- Forks can be nested. The `TERM` an interrupted parent sends to an outer fork reaches it as a `SignalException`, which lets it ask its own children to leave and reap them in turn, within the same half second. A fork that ignores `TERM` leaves orphans: the children of an outer one, when it is killed, and an inner one itself, as the fork above it is likely to be killed before it can kill it.
 - A fork costs a few milliseconds; the pages of the parent are shared copy-on-write, and the cost grows with the size of the parent (about 2 ms at 50 MB, 20 ms at 700 MB).
 
 ## Things to know about fork

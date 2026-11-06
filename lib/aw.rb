@@ -7,7 +7,7 @@ require_relative "aw/fork"
 # or re-raises what it raised. Side effects of the block on the process
 # (mutations, globals, constants, the current directory, `ENV`, a crash)
 # stay in the child; what it does outside, to files or to other processes,
-# does not.
+# happens.
 #
 # The result travels through a pipe with `Marshal`, so it must be a
 # marshalable value; a `Proc`, an `IO` or an instance of an anonymous class
